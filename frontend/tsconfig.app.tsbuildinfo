@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/types.ts","./src/components/agentpanel.tsx","./src/components/arbitrationpanel.tsx","./src/components/goalform.tsx","./src/components/messagelog.tsx","./src/components/messagerow.tsx","./src/hooks/useagora.ts"],"version":"5.9.3"}
