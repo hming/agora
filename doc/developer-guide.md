@@ -149,6 +149,13 @@ Open your browser, type any goal into the Submit Goal field, click Run, and obse
 
 Simplest case: you have a function that can handle tasks and you want it to join the AGORA coordination network.
 
+**Prerequisite: there must be tasks in the queue.** Tasks enter the queue in one of two ways:
+
+- **`POST /goal`**: Submit a natural-language goal. AGORA's internal PlannerAgent uses an LLM to decompose it into subtasks and push them to the queue. Best for open-ended goals where you want dynamic planning.
+- **`POST /tasks`**: Submit a pre-defined task list directly, skipping LLM decomposition. Best for fixed workflows where you need precise control (see section 3.4).
+
+Your external agent starts polling AGORA and claims tasks that match its declared capabilities.
+
 ```python
 # file: my_agent.py
 import sys, asyncio
@@ -223,14 +230,13 @@ node my_agent.mjs
 
 ### 3.4 Submit a Task Graph with Dependencies
 
-If you want precise control over the task structure rather than letting an LLM auto-decompose, submit a pre-defined DAG:
+If you want precise control over the task structure rather than letting an LLM auto-decompose, call `POST /tasks` directly with a pre-defined DAG:
 
 ```bash
-curl -X POST http://localhost:8000/goal \
+curl -X POST http://localhost:8000/tasks \
   -H 'Content-Type: application/json' \
   -d '{
     "goal": "Generate a competitor analysis report",
-    "agent_count": 0,
     "tasks": [
       {
         "id": "collect",
